@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from './presentation/navigation/StackNavigation';
 import { useColorScheme } from 'react-native';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { AuthProvider } from './presentation/providers/AuthProvider';
 
 export const ProductsApp = () => {
 
@@ -32,7 +33,9 @@ export const ProductsApp = () => {
                         }
                     }}
                 >
-                    <StackNavigator />
+                    <AuthProvider>
+                        <StackNavigator />
+                    </AuthProvider>
                 </NavigationContainer>
             </ApplicationProvider>
         </>
