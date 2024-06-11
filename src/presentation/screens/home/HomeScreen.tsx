@@ -19,7 +19,6 @@ export const HomeScreen = () => {
         initialPageParam: 0,
         
         queryFn: async (params) => {
-            console.log({params})
             return await getProductsByPage(params.pageParam);
         },
         getNextPageParam:(lastPage, allPages) => allPages.length,
