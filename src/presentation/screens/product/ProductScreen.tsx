@@ -52,6 +52,8 @@ export const ProductScreen = ({ route }: Props) => {
                     <MainLayout
                         title={values.title}
                         subTitle={`Precio: ${values.price}`}
+                        rightAction={() => console.log('hola mundo')}
+                        rightActionIcon="camera-outline"
                     >
                         <Text>ProductScreen</Text>
 
