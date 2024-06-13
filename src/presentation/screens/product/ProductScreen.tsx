@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Input, Layout, Text, useTheme } from "@ui-kitten/c
 import { MainLayout } from "../../layouts/MainLayout";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParams } from "../../navigation/StackNavigation";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductById } from "../../../actions/products/get-product-by-id";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
@@ -22,6 +22,7 @@ export const ProductScreen = ({ route }: Props) => {
 
     const productIdRef = useRef(route.params.productId);
     const theme = useTheme();
+    const queryClient = useQueryClient();
 
     const { data: product } = useQuery({
         queryKey:['product', productIdRef.current],
@@ -31,8 +32,10 @@ export const ProductScreen = ({ route }: Props) => {
     const mutation = useMutation({
         mutationFn: (data: Product) => updateCreateProduct({...data, id: productIdRef.current}),
         onSuccess(data: Product) {
-            console.log('Success');
-            console.log({data});
+            productIdRef.current = data.id; //creación
+
+            queryClient.invalidateQueries({ queryKey: ['products', 'infinite'] });
+            queryClient.invalidateQueries({ queryKey: ['product', data.id ] });
         }
     })
 
