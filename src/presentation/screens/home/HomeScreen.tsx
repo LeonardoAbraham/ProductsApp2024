@@ -4,8 +4,13 @@ import { getProductsByPage } from "../../../actions/products/get-products-by-pag
 import { MainLayout } from "../../layouts/MainLayout";
 import { FullScreenLoader } from "../../components/ui/FullScreenLoader";
 import { ProductList } from "../../components/products/ProductList";
+import { FAB } from "../../components/ui/FAB";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParams } from "../../navigation/StackNavigation";
 
 export const HomeScreen = () => {
+
+    const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
     //const { isLoading, data: products = [] } = useQuery({
     //    queryKey:['products', 'infinite'],
@@ -25,22 +30,35 @@ export const HomeScreen = () => {
     });
 
     return (
-        <MainLayout
-            title="TesloShop - Products"
-            subTitle="Aplicación administrativa"
-            rightAction={() => {}}
-            rightActionIcon="plus-outline"
-        >
-            {
-                isLoading 
-                    ? (<FullScreenLoader />) 
-                    : (
-                        <ProductList 
-                            products={data?.pages.flat() ?? []} 
-                            fetchNextPage={fetchNextPage}    
-                        />
-                    )
-            }
-        </MainLayout>
+        <>
+            <MainLayout
+                title="TesloShop - Products"
+                subTitle="Aplicación administrativa"
+                rightAction={() => {}}
+                rightActionIcon="plus-outline"
+            >
+                {
+                    isLoading 
+                        ? (<FullScreenLoader />) 
+                        : (
+                            <ProductList 
+                                products={data?.pages.flat() ?? []} 
+                                fetchNextPage={fetchNextPage}    
+                            />
+                        )
+                }
+            </MainLayout>
+
+            <FAB 
+                iconName="plus-outline"
+                onPress={()=>navigation.navigate('ProductScreen', {productId: 'new'})}
+                style={{
+                    position: 'absolute',
+                    bottom: 30,
+                    right: 20,
+                }}
+            />
+        </>
+        
     );
 };
